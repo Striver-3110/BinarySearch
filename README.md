@@ -10,6 +10,7 @@ This repository contains a C++ implementation of the binary search algorithm. Bi
 
 ## Binary Search Algorithm
 
+
 Binary search works on the principle of divide and conquer. The steps involved in the algorithm are:
 
 1. Start with two pointers, `left` and `right`, at the beginning and end of the sorted array.
