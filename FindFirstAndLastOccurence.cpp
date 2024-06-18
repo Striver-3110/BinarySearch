@@ -2,51 +2,59 @@
 #include <vector>
 
 using namespace std;
+
 class Solution {
 private:
-    void BinSearch(vector<int>& nums, int left, int&& right, int &target,bool &&asc,int &ind){
-        if(left > right){
-            return ;
+    // Helper function for binary search
+    // Parameters:
+    // - nums: reference to the vector of numbers
+    // - left: left index for the current search range
+    // - right: right index for the current search range
+    // - target: target number to find
+    // - asc: boolean flag indicating search direction (true for first occurrence, false for last)
+    // - ind: reference to the index of the found target (-1 if not found)
+    void BinSearch(vector<int>& nums, int left, int&& right, int &target, bool &&asc, int &ind) {
+        if (left > right) {
+            return; // Base case: search range is invalid
         }
-        int mid = left + (right - left)/2;
-        if(asc){
-            if(nums[mid] == target){
-                ind = mid;
-                BinSearch(nums,left,move(mid-1),target,move(asc),ind);
+        int mid = left + (right - left) / 2; // Calculate mid index to avoid overflow
+
+        if (asc) { // Search for the first occurrence of the target
+            if (nums[mid] == target) {
+                ind = mid; // Update index if target is found
+                BinSearch(nums, left, move(mid - 1), target, move(asc), ind); // Continue search in the left half
             }
-            else if(nums[mid] > target){
-                BinSearch(nums,left,move(mid-1),target,move(asc),ind);
+            else if (nums[mid] > target) {
+                BinSearch(nums, left, move(mid - 1), target, move(asc), ind); // Continue search in the left half
             }
-            else{
-                BinSearch(nums,mid+1,move(right),target,move(asc),ind);
+            else {
+                BinSearch(nums, mid + 1, move(right), target, move(asc), ind); // Continue search in the right half
             }
         }
-        else{
-            // cout<<"true"<<mid<<endl;
-            if(nums[mid] == target){
-                ind = mid;
-                BinSearch(nums,mid+1,move(right),target,move(asc),ind);
+        else { // Search for the last occurrence of the target
+            if (nums[mid] == target) {
+                ind = mid; // Update index if target is found
+                BinSearch(nums, mid + 1, move(right), target, move(asc), ind); // Continue search in the right half
             }
-            else if(nums[mid] < target){
-                BinSearch(nums,mid+1,move(right),target,move(asc),ind);
+            else if (nums[mid] < target) {
+                BinSearch(nums, mid + 1, move(right), target, move(asc), ind); // Continue search in the right half
             }
-            else{
-                BinSearch(nums,left,move(mid-1),target,move(asc),ind);
+            else {
+                BinSearch(nums, left, move(mid - 1), target, move(asc), ind); // Continue search in the left half
             }
         }
     }
-public:
-    vector<int> searchRange(vector<int>& nums, int target) {
-        // int n = nums.size();
-        int first = -1;
-        BinSearch(nums,0,nums.size()-1,target,true,first);
-        int last = -1;
-        BinSearch(nums,0,nums.size()-1,target,false,last);
-        return {first,last};
 
+public:
+    // Function to find the first and last position of a target number in a sorted array
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int first = -1; // Initialize the first position index
+        BinSearch(nums, 0, nums.size() - 1, target, true, first); // Find the first occurrence of the target
+        int last = -1; // Initialize the last position index
+        BinSearch(nums, 0, nums.size() - 1, target, false, last); // Find the last occurrence of the target
+        return {first, last}; // Return the indices of the first and last occurrence
     }
 };
-
 
 int main() {
     Solution solution;
